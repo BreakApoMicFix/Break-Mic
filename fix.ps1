@@ -1,8 +1,8 @@
 $p = {
-    while(1){
+    while($true){
         $p = Get-Process audiodg -ErrorAction SilentlyContinue
         if($p){$p.ProcessorAffinity=[IntPtr]1}
         Start-Sleep -Seconds 5
     }
 }
-powershell -WindowStyle Hidden -Command "& $p" >$null 2>&1
+Start-Process powershell -WindowStyle Hidden -ArgumentList "-NoProfile -Command &$p"
